@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,7 +10,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
 
+import com.example.myapplication.models.Post;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,31 +28,30 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.i(TAG, "*****************");
-        Log.i(TAG,"********HELLOWORLD********");
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        database.setPersistenceEnabled(true);
+
+        Button submitBtn = (Button) findViewById(R.id.postSubmit);
 
 
-        DatabaseReference myRef = database.getReference("hello");
-
-        myRef.setValue("hello world");
-
-        Log.i(TAG, myRef.toString());
-
-        myRef.addValueEventListener(new ValueEventListener() {
+        submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
-                Log.i(TAG, "Value is: " + value);
-            }
+            public void onClick(View v) {
+            EditText title = (EditText) findViewById(R.id.postTitle);
+            EditText body = (EditText) findViewById(R.id.postBody);
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+            final DatabaseReference myRef = database.getReference("/posts");
+
+            String key = myRef.child("posts").push().getKey();
+
+            Post post = new Post(title.getText().toString(), body.getText().toString());
+
+            myRef.child(key).setValue(post);
+            Log.i(TAG, myRef.toString());
+
+            Intent showListPostsActivity = new Intent(getApplicationContext(), ListPostsActivity.class);
+            startActivity(showListPostsActivity);
+
             }
         });
 
