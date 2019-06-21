@@ -7,6 +7,7 @@ android:
   - extra-google-google_play_services
   - extra-google-m2repository
   - extra-android-m2repository
+  - armeabi-v7a
   - sys-img-x86-android-26
   - sys-img-armeabi-v7a-android-17
 before_install:
