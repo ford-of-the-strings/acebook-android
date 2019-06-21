@@ -1,5 +1,6 @@
 language: android
 dist: trusty
+sudo: true
 android:
   components:
   - build-tools-26.0.2
@@ -9,14 +10,15 @@ android:
   - extra-android-m2repository
   - armeabi-v7a
   - sys-img-x86-android-26
-  - sys-img-armeabi-v7a-android-17
+  - sys-img-armeabi-v7a-android-26
 before_install:
 - openssl aes-256-cbc -K $encrypted_17819ee4ac47_key -iv $encrypted_17819ee4ac47_iv
   -in google-services.json.enc -out ./app/google-services.json -d
 
 # Emulator Management: Create, Start and Wait
 before_script:
-  - echo no | android create avd --force -n test -t android-26 --abi default/x86 -c 100M
+  - android list targets
+  - echo no | android create avd --force -n test -t android-26 --abi x86
   - emulator -avd test -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
