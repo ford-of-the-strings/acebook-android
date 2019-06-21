@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.fots.acebook;
 
 import org.junit.Test;
 

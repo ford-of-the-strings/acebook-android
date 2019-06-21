@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.fots.acebook;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.myapplication.models.Post;
+import com.fots.acebook.models.Post;
 
 import java.util.ArrayList;
 

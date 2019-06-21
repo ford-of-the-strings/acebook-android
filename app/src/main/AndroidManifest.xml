@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.myapplication">
+    package="com.fots.acebook">
 
     <application
         android:allowBackup="true"
@@ -14,11 +14,11 @@
             android:label="@string/title_activity_list_post_view"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".ListPostsActivity"
+            android:name="com.fots.acebook.ListPostsActivity"
             android:label="@string/title_activity_list_posts"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.fots.acebook.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

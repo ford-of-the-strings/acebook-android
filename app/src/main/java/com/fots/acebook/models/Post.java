@@ -1,4 +1,4 @@
-package com.example.myapplication.models;
+package com.fots.acebook.models;
 
 import java.io.Serializable;
 
