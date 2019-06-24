@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.fots.acebook.models.Post;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class PostAdapter extends BaseAdapter {
 

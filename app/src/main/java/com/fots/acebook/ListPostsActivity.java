@@ -17,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class ListPostsActivity extends AppCompatActivity {
 
@@ -31,6 +32,7 @@ public class ListPostsActivity extends AppCompatActivity {
         postsView = (ListView) findViewById(R.id.postsView);
 
         postList = new ArrayList<Post>();
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         DatabaseReference myRef = database.getReference("/posts");
@@ -43,9 +45,11 @@ public class ListPostsActivity extends AppCompatActivity {
                 for(DataSnapshot post: dataSnapshot.getChildren()){
 
                     postList.add(post.getValue(Post.class));
+//
                 }
 
                 PostAdapter postAdapter = new PostAdapter(ListPostsActivity.this, postList);
+                Collections.reverse(postList);
 
                 postsView.setAdapter(postAdapter);
             }
