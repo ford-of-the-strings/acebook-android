@@ -6,6 +6,7 @@ public class Post implements Serializable {
 
     private String title;
     private String body;
+    private String created;
 
     public String getTitle() {
         return title;
@@ -23,9 +24,18 @@ public class Post implements Serializable {
         body = b;
     }
 
+    public String getTime() {
+        return created;
+    }
+
+    public void setTime(String time) {
+        created = time;
+    }
+
     public Post() {}
-    public Post(String t, String b) {
+    public Post(String t, String b, String time) {
         title = t;
         body = b;
+        created = time;
     }
 }
