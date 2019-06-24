@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.fots.acebook.models.Post;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -27,6 +28,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button submitBtn = (Button) findViewById(R.id.postSubmit);
+
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        final DatabaseReference ref = database.getReference("/");
+
+        DatabaseReference dataRef = ref.child("data");
+        dataRef.setValue("I'm writing data", new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if (databaseError != null) {
+                    System.out.println("Data could not be saved " + databaseError.getMessage());
+                } else {
+                    System.out.println("Data saved successfully.");
+                }
+            }
+        });
 
 
         submitBtn.setOnClickListener(new View.OnClickListener() {
