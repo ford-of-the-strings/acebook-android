@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
             Post post = new Post(title.getText().toString(), body.getText().toString());
 
+
             myRef.child(key).setValue(post);
             Log.i(TAG, myRef.toString());
 
