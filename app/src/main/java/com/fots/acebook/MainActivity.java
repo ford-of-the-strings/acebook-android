@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            EditText title = (EditText) findViewById(R.id.postTitle);
+
             EditText body = (EditText) findViewById(R.id.postBody);
 
 
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             String key = myRef.child("posts").push().getKey();
             String currentDateTime = DateFormat.getDateTimeInstance().format(new Date());
 
-            Post post = new Post(title.getText().toString(), body.getText().toString(), currentDateTime);
+            Post post = new Post(body.getText().toString(), currentDateTime);
 
             myRef.child(key).setValue(post);
             Log.i(TAG, myRef.toString());
