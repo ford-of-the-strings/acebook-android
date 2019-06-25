@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.fots.acebook.models.Post;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
@@ -46,14 +47,19 @@ public class PostAdapter extends BaseAdapter {
 
         TextView timeTextView = (TextView) v.findViewById(R.id.timeView);
         TextView bodyTextView = (TextView) v.findViewById(R.id.bodyView);
+        TextView usernameTextView = (TextView) v.findViewById(R.id.usernameView);
 
         Date time = posts.get(position).getTime();
         String body = posts.get(position).getBody();
+        String uid = posts.get(position).getUid();
+//        UserRecord userRecord = FirebaseAuth.getInstance().getUid(uid);
 
         PrettyTime time_display = new PrettyTime();
 
         timeTextView.setText(time_display.format(time));
         bodyTextView.setText(body);
+        usernameTextView.setText(uid);
+
 
         return v;
     }
