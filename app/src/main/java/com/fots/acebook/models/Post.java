@@ -7,6 +7,11 @@ public class Post implements Serializable {
 
     private String body;
     private String created;
+    private String uid;
+
+    public String getUid() { return uid;}
+
+    public void setUid(String name) { uid = name; }
 
 
     public String getBody() {
@@ -26,9 +31,10 @@ public class Post implements Serializable {
     }
 
     public Post() {}
-    public Post(String b, String time) {
+    public Post(String b, String time, String name) {
 
         body = b;
         created = time;
+        uid = name;
     }
 }
