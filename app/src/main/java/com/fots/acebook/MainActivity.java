@@ -13,65 +13,35 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
 import com.fots.acebook.models.Post;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Arrays;
+import java.util.List;
 import java.text.DateFormat;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String TAG = "Main";
+    private static int RC_SIGN_IN = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button submitBtn = (Button) findViewById(R.id.postSubmit);
+        Button loginButton = (Button) findViewById(R.id.loginButton);
 
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-        final DatabaseReference ref = database.getReference("/");
-
-        DatabaseReference dataRef = ref.child("data");
-        dataRef.setValue("I'm writing data", new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                if (databaseError != null) {
-                    System.out.println("Data could not be saved " + databaseError.getMessage());
-                } else {
-                    System.out.println("Data saved successfully.");
-                }
-            }
-        });
-
-
-        submitBtn.setOnClickListener(new View.OnClickListener() {
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-            EditText body = (EditText) findViewById(R.id.postBody);
-
-
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-            final DatabaseReference myRef = database.getReference("/posts");
-
-            String key = myRef.child("posts").push().getKey();
-            String currentDateTime = DateFormat.getDateTimeInstance().format(new Date());
-
-            Post post = new Post(body.getText().toString(), currentDateTime);
-
-            myRef.child(key).setValue(post);
-            Log.i(TAG, myRef.toString());
-
-            Intent showListPostsActivity = new Intent(getApplicationContext(), ListPostsActivity.class);
-            startActivity(showListPostsActivity);
-
+                requestLogin();
             }
         });
 
@@ -87,27 +57,32 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        requestLogin();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        if(requestCode == RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+            if(resultCode == RESULT_OK) {
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                Intent intent = new Intent(this, ListPostsActivity.class);
+                startActivity(intent);
+            }
         }
-
-        return super.onOptionsItemSelected(item);
     }
+
+    private void requestLogin() {
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build()
+        );
+
+        startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(providers).build(), RC_SIGN_IN);
+    }
+
 }
