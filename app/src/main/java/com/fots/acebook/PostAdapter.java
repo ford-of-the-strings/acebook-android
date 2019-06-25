@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.fots.acebook.models.Post;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class PostAdapter extends BaseAdapter {
 
@@ -40,14 +41,15 @@ public class PostAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = mInflator.inflate(R.layout.content_list_post_view, null);
 
-        TextView titleTextView = (TextView) v.findViewById(R.id.titleView);
+        TextView timeTextView = (TextView) v.findViewById(R.id.timeView);
         TextView bodyTextView = (TextView) v.findViewById(R.id.bodyView);
 
-        String title = posts.get(position).getTitle();
+        String time = posts.get(position).getTime();
         String body = posts.get(position).getBody();
 
-        titleTextView.setText(title);
+        timeTextView.setText(time);
         bodyTextView.setText(body);
+
 
         return v;
     }

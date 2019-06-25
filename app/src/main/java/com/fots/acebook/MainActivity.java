@@ -24,10 +24,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 import java.util.List;
+import java.text.DateFormat;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
-
-    private String TAG = "Main";
 
     private static int RC_SIGN_IN = 1;
 
@@ -36,69 +36,75 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button submitBtn = (Button) findViewById(R.id.postSubmit);
+//
+//
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//
+//        final DatabaseReference ref = database.getReference("/");
+//
+//        DatabaseReference dataRef = ref.child("data");
+//        dataRef.setValue("I'm writing data", new DatabaseReference.CompletionListener() {
+//            @Override
+//            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+//                if (databaseError != null) {
+//                    System.out.println("Data could not be saved " + databaseError.getMessage());
+//                } else {
+//                    System.out.println("Data saved successfully.");
+//                }
+//            }
+//        });
+//
+//        Button submitBtn = (Button) findViewById(R.id.postSubmit);
+
+//
+//        submitBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            EditText body = (EditText) findViewById(R.id.postBody);
+//
+//
+//            FirebaseDatabase database = FirebaseDatabase.getInstance();
+//
+//            final DatabaseReference myRef = database.getReference("/posts");
+//
+//            String key = myRef.child("posts").push().getKey();
+//            String currentDateTime = DateFormat.getDateTimeInstance().format(new Date());
+//
+//            Post post = new Post(body.getText().toString(), currentDateTime);
+//
+//            myRef.child(key).setValue(post);
+//            Log.i(TAG, myRef.toString());
+//
+//            Intent showListPostsActivity = new Intent(getApplicationContext(), ListPostsActivity.class);
+//            startActivity(showListPostsActivity);
+//
+//            }
+//        });
 
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-        final DatabaseReference ref = database.getReference("/");
-
-        DatabaseReference dataRef = ref.child("data");
-        dataRef.setValue("I'm writing data", new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                if (databaseError != null) {
-                    System.out.println("Data could not be saved " + databaseError.getMessage());
-                } else {
-                    System.out.println("Data saved successfully.");
-                }
-            }
-        });
-
-
-        submitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            EditText title = (EditText) findViewById(R.id.postTitle);
-            EditText body = (EditText) findViewById(R.id.postBody);
-
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-            final DatabaseReference myRef = database.getReference("/posts");
-
-            String key = myRef.child("posts").push().getKey();
-
-            Post post = new Post(title.getText().toString(), body.getText().toString());
-
-            myRef.child(key).setValue(post);
-            Log.i(TAG, myRef.toString());
-
-            Intent showListPostsActivity = new Intent(getApplicationContext(), ListPostsActivity.class);
-            startActivity(showListPostsActivity);
-
-            }
-        });
-
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
         List<AuthUI.IdpConfig> providers = Arrays.asList(
-                new AuthUI.IdpConfig.EmailBuilder().build(),
-                new AuthUI.IdpConfig.GoogleBuilder().build()
+                new AuthUI.IdpConfig.EmailBuilder().build()
         );
 
         startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(providers).build(), RC_SIGN_IN);
 
+
+        Button loginButton = (Button) findViewById(R.id.loginButton);
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<AuthUI.IdpConfig> providers = Arrays.asList(
+                        new AuthUI.IdpConfig.EmailBuilder().build()
+                );
+
+                startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(providers).build(), RC_SIGN_IN);
+            }
+        });
     }
 
     @Override
@@ -110,29 +116,32 @@ public class MainActivity extends AppCompatActivity {
 
             if(resultCode == RESULT_OK) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                Intent intent = new Intent(this, ListPostsActivity.class);
+                startActivity(intent);
             }
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 }

@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Acebook</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_list_posts">ListPostsActivity</string>
+    <string name="title_activity_list_posts">Your Acebook Feed</string>
     <string name="title_activity_list_post_view">list_post_view</string>
+    <string name="post_body_hint">What\'s on your mind?</string>
+    <string name="post_button">Post to Middle-Earth</string>
+    <string name="title_activity_create_post">CreatePostActivity</string>
+    <string name="login_button">Login</string>
 </resources>
