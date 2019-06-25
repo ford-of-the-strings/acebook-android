@@ -66,8 +66,12 @@ public class CreatePostActivity extends AppCompatActivity {
                 final DatabaseReference myRef = database.getReference("/posts");
 
                 String key = myRef.child("posts").push().getKey();
-                String currentDateTime = DateFormat.getDateTimeInstance().format(new Date());
+
+
                 String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                Date currentDateTime = new Date();
+
 
                 Post post = new Post(body.getText().toString(), currentDateTime, uid);
 

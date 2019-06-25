@@ -1,17 +1,20 @@
 package com.fots.acebook.models;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Post implements Serializable {
 
 
     private String body;
-    private String created;
+    private Date created;
     private String uid;
 
     public String getUid() { return uid;}
 
     public void setUid(String name) { uid = name; }
+
+
 
 
     public String getBody() {
@@ -22,16 +25,18 @@ public class Post implements Serializable {
         body = b;
     }
 
-    public String getTime() {
+    public Date getTime() {
         return created;
     }
 
-    public void setTime(String time) {
+    public void setTime(Date time) {
         created = time;
     }
 
     public Post() {}
-    public Post(String b, String time, String name) {
+
+    public Post(String b, Date time, String name) {
+
 
         body = b;
         created = time;
