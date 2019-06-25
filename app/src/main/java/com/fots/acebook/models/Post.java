@@ -12,7 +12,7 @@ public class Post implements Serializable {
 
     public String getUid() { return uid;}
 
-    public void setUid(String name) { uid = name; }
+    public void setUid(String id) { uid = id; }
 
 
 
@@ -35,11 +35,10 @@ public class Post implements Serializable {
 
     public Post() {}
 
-    public Post(String b, Date time, String name) {
-
+    public Post(String b, Date time, String id) {
 
         body = b;
         created = time;
-        uid = name;
+        uid = id;
     }
 }
