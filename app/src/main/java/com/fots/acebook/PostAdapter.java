@@ -9,8 +9,11 @@ import android.widget.TextView;
 
 import com.fots.acebook.models.Post;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
 public class PostAdapter extends BaseAdapter {
 
@@ -44,12 +47,13 @@ public class PostAdapter extends BaseAdapter {
         TextView timeTextView = (TextView) v.findViewById(R.id.timeView);
         TextView bodyTextView = (TextView) v.findViewById(R.id.bodyView);
 
-        String time = posts.get(position).getTime();
+        Date time = posts.get(position).getTime();
         String body = posts.get(position).getBody();
 
-        timeTextView.setText(time);
-        bodyTextView.setText(body);
+        PrettyTime time_display = new PrettyTime();
 
+        timeTextView.setText(time_display.format(time));
+        bodyTextView.setText(body);
 
         return v;
     }
