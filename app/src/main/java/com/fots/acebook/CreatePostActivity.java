@@ -66,8 +66,6 @@ public class CreatePostActivity extends AppCompatActivity {
                 String key = myRef.child("posts").push().getKey();
                 Date currentDateTime = new Date();
 
-//                        DateFormat.getDateTimeInstance().format(new Date());
-
                 Post post = new Post(body.getText().toString(), currentDateTime);
 
                 myRef.child(key).setValue(post);
