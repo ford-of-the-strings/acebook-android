@@ -16,6 +16,7 @@ import android.widget.EditText;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.fots.acebook.models.Post;
+import com.fots.acebook.models.User;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,9 +24,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -69,7 +72,17 @@ public class MainActivity extends AppCompatActivity {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if(resultCode == RESULT_OK) {
+
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                User userDB = new User(user.getDisplayName());
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                final DatabaseReference myRef = database.getReference("/users");
+
+                Map<String, Object> userMap = new HashMap<>();
+                userMap.put(user.getUid(), userDB);
+
+                myRef.updateChildren(userMap);
 
                 Intent intent = new Intent(this, ListPostsActivity.class);
                 startActivity(intent);

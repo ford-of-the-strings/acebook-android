@@ -8,6 +8,13 @@ public class Post implements Serializable {
 
     private String body;
     private Date created;
+    private String uid;
+
+    public String getUid() { return uid;}
+
+    public void setUid(String id) { uid = id; }
+
+
 
 
     public String getBody() {
@@ -27,9 +34,11 @@ public class Post implements Serializable {
     }
 
     public Post() {}
-    public Post(String b, Date time) {
+
+    public Post(String b, Date time, String id) {
 
         body = b;
         created = time;
+        uid = id;
     }
 }
