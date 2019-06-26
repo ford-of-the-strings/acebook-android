@@ -10,11 +10,19 @@ public class Post implements Serializable {
     private Date created;
     private String uid;
 
+    public void setPostId(String postId) {
+        this.postId = postId;
+    }
+
+    private String postId;
+
+    public String getPostId() {
+        return postId;
+    }
+
     public String getUid() { return uid;}
 
     public void setUid(String id) { uid = id; }
-
-
 
 
     public String getBody() {

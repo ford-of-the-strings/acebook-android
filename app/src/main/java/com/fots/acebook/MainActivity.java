@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
         requestLogin();
     }
 
@@ -97,5 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
         startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(providers).build(), RC_SIGN_IN);
     }
+
+
 
 }
