@@ -1,6 +1,7 @@
 package com.fots.acebook;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatImageButton;
 import android.view.LayoutInflater;
@@ -26,13 +27,19 @@ import java.util.Collections;
 import java.util.Date;
 
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
+import static android.support.v4.content.ContextCompat.startActivity;
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class PostAdapter extends BaseAdapter {
 
     ArrayList<Post> posts;
+    Context context;
 
     User user;
     String name;
+
+    public static final String POST_BODY = "com.fots.acebook.BODY";
+    public static final String POST_ID = "com.fots.acebook.ID";
 
     LayoutInflater mInflator;
     @Override
@@ -41,6 +48,7 @@ public class PostAdapter extends BaseAdapter {
     }
 
     public PostAdapter(Context c, ArrayList<Post> ps) {
+        context = c;
         posts = ps;
         mInflator = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -70,7 +78,6 @@ public class PostAdapter extends BaseAdapter {
         String body = posts.get(position).getBody();
         String uid = posts.get(position).getUid();
         if(uid.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-            System.out.println("HELLO*******************************");
             deleteButton.setVisibility(View.VISIBLE);
             String postId = posts.get(position).getPostId();
             deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -81,8 +88,17 @@ public class PostAdapter extends BaseAdapter {
             });
 
             editButton.setVisibility(View.VISIBLE);
+            editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+//                    updatePost(body);
+                    Intent intent = new Intent(context, UpdatePostActivity.class);
+                    intent.putExtra(POST_BODY, body);
+                    intent.putExtra(POST_ID, postId);
+                    context.startActivity(intent);
+                }
+            });
         }
-
 
         PrettyTime time_display = new PrettyTime();
 
@@ -116,4 +132,5 @@ public class PostAdapter extends BaseAdapter {
         final DatabaseReference myRef = db.getReference("/posts");
         myRef.child(id).removeValue();
     }
+
 }
