@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.fots.acebook.models.Post;
@@ -102,7 +103,13 @@ public class CreatePostActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-               Intent intent = new Intent(Intent.ACTION_SEND);
+               Intent intent = getPackageManager().getLaunchIntentForPackage("com.facebook.orca");
+               try {
+                   startActivity(intent);
+               }
+               catch (android.content.ActivityNotFoundException ex){
+                   Toast.makeText(getApplicationContext(), "Please Install Facebook Messenger", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
