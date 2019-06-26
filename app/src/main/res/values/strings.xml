@@ -8,4 +8,5 @@
     <string name="title_activity_create_post">Create post</string>
     <string name="login_button">Login</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="post_delete_button">Delete</string>
 </resources>
