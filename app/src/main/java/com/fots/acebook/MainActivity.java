@@ -97,4 +97,6 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(providers).build(), RC_SIGN_IN);
     }
 
+
+
 }
