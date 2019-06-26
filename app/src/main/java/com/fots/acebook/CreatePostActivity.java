@@ -41,15 +41,15 @@ public class CreatePostActivity extends AppCompatActivity {
 
         Button submitBtn = (Button) findViewById(R.id.postSubmit);
 
-        Button logoutButton = (Button) findViewById(R.id.logoutButton);
+//        Button logoutButton = (Button) findViewById(R.id.logoutButton);
 
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requestLogout();
-            }
-        });
-
+//        logoutButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                requestLogout();
+//            }
+//        });
+//
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         final DatabaseReference ref = database.getReference("/");
@@ -98,20 +98,20 @@ public class CreatePostActivity extends AppCompatActivity {
         });
 
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-               Intent intent = getPackageManager().getLaunchIntentForPackage("com.facebook.orca");
-               try {
-                   startActivity(intent);
-               }
-               catch (android.content.ActivityNotFoundException ex){
-                   Toast.makeText(getApplicationContext(), "Please Install Facebook Messenger", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+//        FloatingActionButton messenger = findViewById(R.id.fab);
+//        messenger.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//               Intent intent = getPackageManager().getLaunchIntentForPackage("com.facebook.orca");
+//               try {
+//                   startActivity(intent);
+//               }
+//               catch (android.content.ActivityNotFoundException ex){
+//                   Toast.makeText(getApplicationContext(), "Please Install Facebook Messenger", Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -129,8 +129,16 @@ public class CreatePostActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_messenger) {
+            Intent intent = getPackageManager().getLaunchIntentForPackage("com.facebook.orca");
+            try {
+                startActivity(intent);
+            }
+            catch (android.content.ActivityNotFoundException ex){
+                Toast.makeText(getApplicationContext(), "Please Install Facebook Messenger", Toast.LENGTH_LONG).show();
+            }
+        } else if (id == R.id.action_logout) {
+            requestLogout();
         }
 
         return super.onOptionsItemSelected(item);

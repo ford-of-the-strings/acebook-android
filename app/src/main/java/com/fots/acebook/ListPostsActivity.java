@@ -7,9 +7,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.fots.acebook.models.Post;
@@ -35,16 +38,11 @@ public class ListPostsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_posts);
 
-        Button logoutButton = (Button) findViewById(R.id.logoutButton);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requestLogout();
-            }
-        });
 
-        postsView = (ListView) findViewById(R.id.postsView);
+        postsView = findViewById(R.id.postsView);
 
         postList = new ArrayList<Post>();
 
@@ -78,8 +76,7 @@ public class ListPostsActivity extends AppCompatActivity {
         });
 
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +86,38 @@ public class ListPostsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_messenger) {
+            Intent intent = getPackageManager().getLaunchIntentForPackage("com.facebook.orca");
+            try {
+                startActivity(intent);
+            }
+            catch (android.content.ActivityNotFoundException ex){
+                Toast.makeText(getApplicationContext(), "Please Install Facebook Messenger", Toast.LENGTH_LONG).show();
+            }
+        } else if (id == R.id.action_logout) {
+            requestLogout();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public void requestLogout() {
