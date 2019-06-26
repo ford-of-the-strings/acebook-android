@@ -43,10 +43,12 @@ public class ListPostsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                for(DataSnapshot post: dataSnapshot.getChildren()){
+                postList.clear();
 
-                    postList.add(post.getValue(Post.class));
-//
+                for(DataSnapshot post: dataSnapshot.getChildren()){
+                    Post newPost = post.getValue(Post.class);
+                    newPost.setPostId(post.getKey());
+                    postList.add(newPost);
                 }
 
                 PostAdapter postAdapter = new PostAdapter(ListPostsActivity.this, postList);
