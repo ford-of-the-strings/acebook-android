@@ -5,6 +5,7 @@
     <string name="title_activity_list_post_view">Your Acebook Feed</string>
     <string name="post_body_hint">What\'s on your mind?</string>
     <string name="post_button">Post to Middle-Earth</string>
+    <string name="update_button">Submit Update</string>
     <string name="title_activity_create_post">Create post</string>
     <string name="login_button">Login</string>
     <string name="title_activity_login">LoginActivity</string>
