@@ -70,16 +70,20 @@ public class PostAdapter extends BaseAdapter {
         TextView timeTextView = v.findViewById(R.id.timeView);
         TextView bodyTextView = v.findViewById(R.id.bodyView);
         TextView usernameTextView = v.findViewById(R.id.usernameView);
+        TextView likesDisplay = v.findViewById(R.id.likesText);
 
+        AppCompatImageButton likeButton = v.findViewById(R.id.likeButton);
         AppCompatImageButton deleteButton = v.findViewById(R.id.deleteButton);
         AppCompatImageButton editButton = v.findViewById(R.id.editButton);
 
         Date time = posts.get(position).getTime();
         String body = posts.get(position).getBody();
         String uid = posts.get(position).getUid();
+        String postId = posts.get(position).getPostId();
+        int numberOfLikes = posts.get(position).getNumberOfLikes();
+
         if(uid.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
             deleteButton.setVisibility(View.VISIBLE);
-            String postId = posts.get(position).getPostId();
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -91,14 +95,28 @@ public class PostAdapter extends BaseAdapter {
             editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    updatePost(body);
                     Intent intent = new Intent(context, UpdatePostActivity.class);
                     intent.putExtra(POST_BODY, body);
                     intent.putExtra(POST_ID, postId);
                     context.startActivity(intent);
                 }
             });
+
         }
+
+        likeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                FirebaseDatabase db = FirebaseDatabase.getInstance();
+                final DatabaseReference myRef = db.getReference("/posts");
+
+                myRef.child(postId).child("numberOfLikes").setValue(numberOfLikes + 1);
+
+            }
+        });
+
+        likesDisplay.setText(numberOfLikes + " people like this");
 
         PrettyTime time_display = new PrettyTime();
 
@@ -123,7 +141,6 @@ public class PostAdapter extends BaseAdapter {
         });
 
         return v;
-
 
     }
 
