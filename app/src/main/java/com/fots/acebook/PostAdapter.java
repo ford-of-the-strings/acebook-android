@@ -41,6 +41,11 @@ public class PostAdapter extends BaseAdapter {
     public static final String POST_BODY = "com.fots.acebook.BODY";
     public static final String POST_ID = "com.fots.acebook.ID";
 
+    private FirebaseDatabase db = FirebaseDatabase.getInstance();
+    final DatabaseReference postRef = db.getReference("/posts");
+    final DatabaseReference userRef = db.getReference("/users");
+
+
     LayoutInflater mInflator;
     @Override
     public int getCount() {
@@ -107,12 +112,7 @@ public class PostAdapter extends BaseAdapter {
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                FirebaseDatabase db = FirebaseDatabase.getInstance();
-                final DatabaseReference myRef = db.getReference("/posts");
-
-                myRef.child(postId).child("numberOfLikes").setValue(numberOfLikes + 1);
-
+                postRef.child(postId).child("numberOfLikes").setValue(numberOfLikes + 1);
             }
         });
 
@@ -122,32 +122,25 @@ public class PostAdapter extends BaseAdapter {
 
         timeTextView.setText(time_display.format(time));
         bodyTextView.setText(body);
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef = db.getReference("/users");
 
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 user = dataSnapshot.child(uid).getValue(User.class);
                 name = user.getName();
                 usernameTextView.setText(name);
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
 
         return v;
-
     }
 
     private void deletePost(String id) {
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef = db.getReference("/posts");
-        myRef.child(id).removeValue();
+        postRef.child(id).removeValue();
     }
 
 }

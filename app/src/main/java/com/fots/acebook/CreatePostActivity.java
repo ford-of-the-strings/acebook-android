@@ -28,9 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.DateFormat;
 import java.util.Date;
 
-public class CreatePostActivity extends AppCompatActivity {
-
-    private String TAG = "CreatePost";
+public class CreatePostActivity extends ToolbarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,125 +37,27 @@ public class CreatePostActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Button submitBtn = (Button) findViewById(R.id.postSubmit);
-
-//        Button logoutButton = (Button) findViewById(R.id.logoutButton);
-
-//        logoutButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                requestLogout();
-//            }
-//        });
-//
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-        final DatabaseReference ref = database.getReference("/");
-
-        DatabaseReference dataRef = ref.child("data");
-        dataRef.setValue("I'm writing data", new DatabaseReference.CompletionListener() {
-            @Override
-            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                if (databaseError != null) {
-                    System.out.println("Data could not be saved " + databaseError.getMessage());
-                } else {
-                    System.out.println("Data saved successfully.");
-                }
-            }
-        });
-
-
+        Button submitBtn = findViewById(R.id.postSubmit);
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                EditText body = (EditText) findViewById(R.id.postBody);
-
+                EditText body = findViewById(R.id.postBody);
 
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-                final DatabaseReference myRef = database.getReference("/posts");
-
-                String key = myRef.child("posts").push().getKey();
-
-
+                final DatabaseReference postRef = database.getReference("/posts");
+                String key = postRef.child("posts").push().getKey();
                 String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
                 Date currentDateTime = new Date();
-
-
                 Post post = new Post(body.getText().toString(), currentDateTime, uid);
 
-                myRef.child(key).setValue(post);
-                Log.i(TAG, myRef.toString());
+                postRef.child(key).setValue(post);
 
                 Intent showListPostsActivity = new Intent(getApplicationContext(), ListPostsActivity.class);
                 startActivity(showListPostsActivity);
-
             }
         });
-
-
-//        FloatingActionButton messenger = findViewById(R.id.fab);
-//        messenger.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//               Intent intent = getPackageManager().getLaunchIntentForPackage("com.facebook.orca");
-//               try {
-//                   startActivity(intent);
-//               }
-//               catch (android.content.ActivityNotFoundException ex){
-//                   Toast.makeText(getApplicationContext(), "Please Install Facebook Messenger", Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        });
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_messenger) {
-            Intent intent = getPackageManager().getLaunchIntentForPackage("com.facebook.orca");
-            try {
-                startActivity(intent);
-            }
-            catch (android.content.ActivityNotFoundException ex){
-                Toast.makeText(getApplicationContext(), "Please Install Facebook Messenger", Toast.LENGTH_LONG).show();
-            }
-        } else if (id == R.id.action_logout) {
-            requestLogout();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    public void requestLogout() {
-
-        AuthUI.getInstance()
-                .signOut(this)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
-                    }
-                });
-
-    }
-
 
 }

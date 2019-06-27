@@ -27,7 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ListPostsActivity extends AppCompatActivity {
+public class ListPostsActivity extends ToolbarActivity {
 
     ListView postsView;
     ArrayList<Post> postList;
@@ -41,16 +41,14 @@ public class ListPostsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         postsView = findViewById(R.id.postsView);
 
         postList = new ArrayList<Post>();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference postRef = database.getReference("/posts");
 
-        DatabaseReference myRef = database.getReference("/posts");
-
-        myRef.addValueEventListener(new ValueEventListener() {
+        postRef.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -71,12 +69,8 @@ public class ListPostsActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
-
-
-
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -86,52 +80,5 @@ public class ListPostsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_messenger) {
-            Intent intent = getPackageManager().getLaunchIntentForPackage("com.facebook.orca");
-            try {
-                startActivity(intent);
-            }
-            catch (android.content.ActivityNotFoundException ex){
-                Toast.makeText(getApplicationContext(), "Please Install Facebook Messenger", Toast.LENGTH_LONG).show();
-            }
-        } else if (id == R.id.action_logout) {
-            requestLogout();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void requestLogout() {
-
-        AuthUI.getInstance()
-                .signOut(this)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
-                    }
-                });
-
-    }
-
 }
