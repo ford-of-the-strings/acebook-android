@@ -9,12 +9,21 @@ public class Post implements Serializable {
     private String body;
     private Date created;
     private String uid;
+    private int numberOfLikes;
+    private String postId;
+
+
+    public int getNumberOfLikes() {
+        return numberOfLikes;
+    }
+
+    public void setNumberOfLikes(int numberOfLikes) {
+        this.numberOfLikes = numberOfLikes;
+    }
 
     public void setPostId(String postId) {
         this.postId = postId;
     }
-
-    private String postId;
 
     public String getPostId() {
         return postId;
@@ -49,4 +58,5 @@ public class Post implements Serializable {
         created = time;
         uid = id;
     }
+
 }
