@@ -72,8 +72,8 @@ public class ListPostsActivity extends ToolbarActivity {
             }
         });
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton createPostFAB = findViewById(R.id.fab);
+        createPostFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), CreatePostActivity.class);
