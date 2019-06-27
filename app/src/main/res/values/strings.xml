@@ -11,4 +11,5 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="logout_button">Logout</string>
     <string name="post_delete_button">Delete</string>
+    <string name="messenger">Messenger</string>
 </resources>
