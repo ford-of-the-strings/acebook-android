@@ -8,12 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.fots.acebook.models.Post;
 import com.fots.acebook.models.User;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,12 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
-import static android.support.v4.content.ContextCompat.startActivity;
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class PostAdapter extends BaseAdapter {
 
@@ -40,6 +33,11 @@ public class PostAdapter extends BaseAdapter {
 
     public static final String POST_BODY = "com.fots.acebook.BODY";
     public static final String POST_ID = "com.fots.acebook.ID";
+
+    private FirebaseDatabase db = FirebaseDatabase.getInstance();
+    final DatabaseReference postRef = db.getReference("/posts");
+    final DatabaseReference userRef = db.getReference("/users");
+
 
     LayoutInflater mInflator;
     @Override
@@ -82,7 +80,7 @@ public class PostAdapter extends BaseAdapter {
         String postId = posts.get(position).getPostId();
         int numberOfLikes = posts.get(position).getNumberOfLikes();
 
-        if(uid.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+        if(uid.equals(Authentication.getUID())) {
             deleteButton.setVisibility(View.VISIBLE);
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -107,12 +105,7 @@ public class PostAdapter extends BaseAdapter {
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                FirebaseDatabase db = FirebaseDatabase.getInstance();
-                final DatabaseReference myRef = db.getReference("/posts");
-
-                myRef.child(postId).child("numberOfLikes").setValue(numberOfLikes + 1);
-
+                postRef.child(postId).child("numberOfLikes").setValue(numberOfLikes + 1);
             }
         });
 
@@ -122,32 +115,22 @@ public class PostAdapter extends BaseAdapter {
 
         timeTextView.setText(time_display.format(time));
         bodyTextView.setText(body);
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef = db.getReference("/users");
 
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 user = dataSnapshot.child(uid).getValue(User.class);
                 name = user.getName();
                 usernameTextView.setText(name);
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
-
         return v;
-
     }
-
     private void deletePost(String id) {
-        FirebaseDatabase db = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef = db.getReference("/posts");
-        myRef.child(id).removeValue();
+        postRef.child(id).removeValue();
     }
-
 }
