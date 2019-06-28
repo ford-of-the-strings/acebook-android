@@ -1,7 +1,8 @@
 [![Build Status](https://travis-ci.org/ford-of-the-strings/acebook-android.svg?branch=master)](https://travis-ci.org/ford-of-the-strings/acebook-android)
 
-#Ford of the Strings: the fellowship of Acebook
+# Ford of the Strings: the fellowship of Acebook
 
-##Usage instructions
+## Usage instructions
 
-##Details of implementation
+## Details of implementation
+
